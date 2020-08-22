@@ -146,6 +146,7 @@ def crawlThejakartapost(keywords, counts):
                     data[2].append(day)
                     data[3].append(key)
                     data[4].append(link.get_attribute("href"))
+                    data[5].append('https://www.thejakartapost.com/')
                     count += 1
                 except Exception as e:
                     continue
