@@ -22,6 +22,66 @@ def save(data, target):
     fileName = strftime("%Y-%m-%d", gmtime()) + "_" + target + '.csv'
     df.to_csv(fileName, sep=',')
 
+
+def crawlPsychiatry(keywords, counts):
+    data = [[], [], [], [], [], []]
+    driver = webdriver.Chrome(chrome_options=options)
+    keywords = keywords.split(',')
+    for key in keywords:
+        driver.get(
+            'https://www.psychiatry.org/home/search-results?k={}'.format(key))
+        time.sleep(3)
+        try:
+            driver.find_element_by_id('btnAccept').click()
+        except:
+            pass
+        current_page = 1
+        last_page = int(driver.find_elements_by_css_selector(
+            'main li')[-1].find_element_by_tag_name('a').text)
+        driver.find_element_by_css_selector('li.pagination-current').click()
+        base_url = driver.current_url[:-1]
+        count = 0
+        while(1):
+            if(count >= counts):
+                continue
+            all_news = driver.find_elements_by_css_selector(
+                '.slab.slab--search')
+            for i in range(len(all_news)):
+                title = all_news[i].find_element_by_tag_name('h2').text
+
+                link = all_news[i].find_element_by_css_selector(
+                    'h2 a').get_attribute('href')
+                if(link.endswith(('.pdf', '.csv', '.xlsx', '.pptx', '.ppt', '.doc'))):
+                    continue
+                driver.get(link)
+                try:
+                    date = driver.find_element_by_tag_name('time').text
+                except:
+                    date = ''
+                try:
+                    contents = driver.find_element_by_tag_name('main').text
+                except:
+                    contents = ''
+                data[0].append(title.encode('ascii', 'ignore'))
+                data[1].append(contents.encode('ascii', 'ignore'))
+                data[2].append(date)
+                data[3].append(key)
+                data[4].append(link)
+                data[5].append('https://www.psychiatry.org')
+
+                driver.execute_script("window.history.go(-1)")
+                time.sleep(3)
+                all_news = driver.find_elements_by_css_selector(
+                    '.slab.slab--search')
+            if((current_page + 1) == last_page):
+                break
+            current_page += 1
+            driver.get(base_url + str(current_page))
+            last_page = int(driver.find_elements_by_css_selector(
+                'main li')[-1].find_element_by_tag_name('a').text)
+    return data
+
+
 def crawlWhoWesternpacific(keywords, counts):
     data = [[], [], [], [], [], []]
     driver = webdriver.Chrome(chrome_options=options)
@@ -37,8 +97,8 @@ def crawlWhoWesternpacific(keywords, counts):
 
         for news in all_news:
 
-            if(count > counts):
-                return data
+            if(count >= counts):
+                continue
 
             title = news.find_element_by_class_name('result-title').text
             link = news.find_element_by_class_name(
@@ -60,9 +120,11 @@ def crawlWhoWesternpacific(keywords, counts):
             data[3].append(key)
             data[4].append(link)
             data[5].append('https://www.who.int/southeastasia')
+            count += 1
         time.sleep(10)
 
     return data
+
 
 def crawlWhoSoutheastasia(keywords, counts):
     data = [[], [], [], [], [], []]
@@ -80,7 +142,7 @@ def crawlWhoSoutheastasia(keywords, counts):
         for news in all_news:
 
             if(count > counts):
-                return data
+                continue
 
             title = news.find_element_by_class_name('result-title').text
             link = news.find_element_by_class_name(
@@ -102,6 +164,7 @@ def crawlWhoSoutheastasia(keywords, counts):
             data[3].append(key)
             data[4].append(link)
             data[5].append('https://www.who.int/southeastasia')
+            count += 1
         time.sleep(10)
 
     return data
