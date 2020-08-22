@@ -23,8 +23,63 @@ def save(data, target):
     df.to_csv(fileName, sep=',')
 
 
+def crawlThejakartapost(keywords, counts):
+    data = [[], [], [], [], [], []]
+    driver = webdriver.Chrome(chrome_options=options)
+    keywords = keywords.split(',')
+    for key in keywords:
+        driver.get("https://www.thejakartapost.com/news")
+        time.sleep(1)
+        searchBtn = driver.find_element_by_class_name('search')
+        searchBtn.click()
+        search_input = driver.find_element_by_name('q')
+        time.sleep(1)
+        search_input.send_keys(key)
+        time.sleep(1)
+        search_input.send_keys(Keys.ENTER)
+        time.sleep(1)
+        
+        numOfPages = len(driver.find_elements_by_css_selector('.gsc-cursor-page'))
+        count = 0
+        for page in range(numOfPages):
+            pages = driver.find_elements_by_css_selector('.gsc-cursor-page')
+            pages[page].click()
+            time.sleep(1)
+            for link in driver.find_elements_by_css_selector(".gsc-thumbnail-inside .gs-title a.gs-title"):
+                if(count >= counts):
+                    break
+                try:
+                    time.sleep(1)
+                    r = requests.get(link.get_attribute("href"))
+                except Exception as e:
+                    continue
+                soup = BeautifulSoup(r.text, 'html.parser')
+                try:
+                    title = soup.find(['h1', 'h3'], class_ = 'title-large').text.strip()
+                    day = soup.find_all(class_='day')
+                    if(len(day) > 1):
+                        day = day[1].text.strip()
+                    else:
+                        day = day[0].text.strip()
+                    contents = soup.find('div', class_ = ['show-define-text', 'detailNews'])
+                    text = ''
+                    for p in contents.find_all('p'):
+                        text += p.text.strip()
+                    data[0].append(title.encode('ascii', 'ignore'))
+                    data[1].append(text.encode('ascii', 'ignore'))
+                    data[2].append(day)
+                    data[3].append(key)
+                    data[4].append(link.get_attribute("href"))
+                    count += 1
+                except Exception as e:
+                    continue
+            if(count >= counts):
+                break
+        time.sleep(10)
 
-def crawlTimesofindia(keyword, counts):
+    return data
+
+def crawlTimesofindia(keywords, counts):
     data = [[], [], [], [], [], []]
     keywords = keywords.split(',')
     for key in keywords:
