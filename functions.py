@@ -38,8 +38,9 @@ def crawlThejakartapost(keywords, counts):
         time.sleep(1)
         search_input.send_keys(Keys.ENTER)
         time.sleep(1)
-        
-        numOfPages = len(driver.find_elements_by_css_selector('.gsc-cursor-page'))
+
+        numOfPages = len(
+            driver.find_elements_by_css_selector('.gsc-cursor-page'))
         count = 0
         for page in range(numOfPages):
             pages = driver.find_elements_by_css_selector('.gsc-cursor-page')
@@ -55,13 +56,15 @@ def crawlThejakartapost(keywords, counts):
                     continue
                 soup = BeautifulSoup(r.text, 'html.parser')
                 try:
-                    title = soup.find(['h1', 'h3'], class_ = 'title-large').text.strip()
+                    title = soup.find(
+                        ['h1', 'h3'], class_='title-large').text.strip()
                     day = soup.find_all(class_='day')
                     if(len(day) > 1):
                         day = day[1].text.strip()
                     else:
                         day = day[0].text.strip()
-                    contents = soup.find('div', class_ = ['show-define-text', 'detailNews'])
+                    contents = soup.find(
+                        'div', class_=['show-define-text', 'detailNews'])
                     text = ''
                     for p in contents.find_all('p'):
                         text += p.text.strip()
@@ -79,14 +82,13 @@ def crawlThejakartapost(keywords, counts):
 
     return data
 
+
 def crawlTimesofindia(keywords, counts):
     data = [[], [], [], [], [], []]
     keywords = keywords.split(',')
     for key in keywords:
         count = 0
         for i in range(15):
-            if(count >= counts):
-                continue
             try:
                 r = requests.get(
                     'https://timesofindia.indiatimes.com/topic/{}/news/{}'.format(key, i+1))
@@ -95,8 +97,9 @@ def crawlTimesofindia(keywords, counts):
                 continue
             itemList = soup.find(itemprop='ItemList').find_all('li')
             for news in itemList:
+                if(count >= counts):
+                    break
                 link = news.find('div', class_='content').a['href']
-                print(link)
                 title = news.find('div', class_='content').a.span.text
                 date = news.find('div', class_='content').a.find(
                     'span', class_='meta').text
@@ -116,6 +119,8 @@ def crawlTimesofindia(keywords, counts):
                 data[4].append(link)
                 data[5].append('https://timesofindia.indiatimes.com/')
                 count += 1
+            if(count >= counts):
+                break
     return data
 
 
@@ -143,6 +148,8 @@ def crawlPsychiatry(keywords, counts):
             all_news = driver.find_elements_by_css_selector(
                 '.slab.slab--search')
             for i in range(len(all_news)):
+                if(count >= counts):
+                    break
                 title = all_news[i].find_element_by_tag_name('h2').text
 
                 link = all_news[i].find_element_by_css_selector(
@@ -164,11 +171,14 @@ def crawlPsychiatry(keywords, counts):
                 data[3].append(key)
                 data[4].append(link)
                 data[5].append('https://www.psychiatry.org')
+                count += 1
 
                 driver.execute_script("window.history.go(-1)")
                 time.sleep(3)
                 all_news = driver.find_elements_by_css_selector(
                     '.slab.slab--search')
+            if(count >= counts):
+                break
             if((current_page + 1) == last_page):
                 break
             current_page += 1
@@ -194,7 +204,7 @@ def crawlWhoWesternpacific(keywords, counts):
         for news in all_news:
 
             if(count >= counts):
-                continue
+                break
 
             title = news.find_element_by_class_name('result-title').text
             link = news.find_element_by_class_name(
@@ -238,7 +248,7 @@ def crawlWhoSoutheastasia(keywords, counts):
         for news in all_news:
 
             if(count > counts):
-                continue
+                break
 
             title = news.find_element_by_class_name('result-title').text
             link = news.find_element_by_class_name(
