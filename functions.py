@@ -23,6 +23,79 @@ def save(data, target):
     df.to_csv(fileName, sep=',')
 
 
+def crawlBangkokpost(keywords, counts):
+    data = [[], [], [], [], [], []]
+    keywords = keywords.split(',')
+    for key in keywords:
+        r = requests.get(
+            "https://search.bangkokpost.com/search/result?category=news&q={}/".format(key))
+        if(r.status_code == requests.codes.ok):
+            soup = BeautifulSoup(r.text, 'html.parser')
+            content = soup.find(id='content')
+            search_list = content.find('ul', class_='SearchList')
+            pages = content.find('p', class_='page-Navigation')
+
+            count = 0
+
+            while(pages.find_all('a')[-2].contents[0] == 'Next'):
+                for i, h3 in enumerate(search_list.find_all('h3')):
+                    if(count >= counts):
+                        break
+
+                    news_link = h3.find('a')['href']
+                    head = h3.find('a').text.strip()
+                    news_publish = search_list.find_all('p', class_='writerdetail')[
+                        i].find('span').text.strip()
+                    news_request = requests.get(news_link)
+                    if(news_request.status_code == requests.codes.ok):
+                        news_soup = BeautifulSoup(
+                            news_request.text, 'html.parser')
+                        try:
+                            news_content = news_soup.find(
+                                'div', class_=['articl-content', 'articleContents']).text.strip()
+                            data[0].append(head.encode('ascii', 'ignore'))
+                            data[1].append(
+                                news_content.encode('ascii', 'ignore'))
+                            data[2].append(news_publish)
+                            data[3].append(key)
+                            data[4].append(news_link)
+                            data[5].append('https://www.bangkokpost.com/')
+                            count += 1
+                        except Exception as e:
+                            continue
+                if(count >= counts):
+                    break
+
+                r = requests.get(pages.find_all('a')[-2]['href'])
+                soup = BeautifulSoup(r.text, 'html.parser')
+                content = soup.find(id='content')
+                search_list = content.find('ul', class_='SearchList')
+                pages = content.find('p', class_='page-Navigation')
+
+            for i, h3 in enumerate(search_list.find_all('h3')):
+                if(count >= counts):
+                    break
+
+                news_link = h3.find('a')['href']
+                head = h3.find('a').text.strip()
+                news_publish = search_list.find_all('p', class_='writerdetail')[
+                    i].find('span').text.strip()
+                news_request = requests.get(news_link)
+                if(news_request.status_code == requests.codes.ok):
+                    news_soup = BeautifulSoup(news_request.text, 'html.parser')
+                    try:
+                        news_content = news_soup.find(
+                            'div', class_=['articl-content', 'articleContents']).text.strip()
+                        data[0].append(head.encode('ascii', 'ignore'))
+                        data[1].append(news_content.encode('ascii', 'ignore'))
+                        data[2].append(news_publish)
+                        data[3].append(key)
+                        data[4].append(news_link)
+                        data[5].append('https://www.bangkokpost.com/')
+                    except Exception as e:
+                        continue
+    return data
+
 def crawlThejakartapost(keywords, counts):
     data = [[], [], [], [], [], []]
     driver = webdriver.Chrome(chrome_options=options)
