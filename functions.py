@@ -23,6 +23,46 @@ def save(data, target):
     df.to_csv(fileName, sep=',')
 
 
+def crwalTimesofindia(keyword, counts):
+    data = [[], [], [], [], [], []]
+    keywords = keywords.split(',')
+    for key in keywords:
+        count = 0
+        for i in range(15):
+            if(count >= counts):
+                continue
+            try:
+                r = requests.get(
+                    'https://timesofindia.indiatimes.com/topic/{}/news/{}'.format(key, i+1))
+                soup = BeautifulSoup(r.text, 'html.parser')
+            except:
+                continue
+            itemList = soup.find(itemprop='ItemList').find_all('li')
+            for news in itemList:
+                link = news.find('div', class_='content').a['href']
+                print(link)
+                title = news.find('div', class_='content').a.span.text
+                date = news.find('div', class_='content').a.find(
+                    'span', class_='meta').text
+                try:
+                    r = requests.get(
+                        'https://timesofindia.indiatimes.com/' + link)
+                    news_soup = BeautifulSoup(r.text, 'html.parser')
+                    contents = news_soup.find(
+                        'div', class_=['article_content', '_1_Akb', 'section1']).text
+                except:
+                    continue
+
+                data[0].append(title.encode('ascii', 'ignore'))
+                data[1].append(contents.encode('ascii', 'ignore'))
+                data[2].append(date)
+                data[3].append(key)
+                data[4].append(link)
+                data[5].append('https://timesofindia.indiatimes.com/')
+                count += 1
+    return data
+
+
 def crawlPsychiatry(keywords, counts):
     data = [[], [], [], [], [], []]
     driver = webdriver.Chrome(chrome_options=options)
