@@ -23,7 +23,8 @@ def save(data, target):
     df.to_csv(fileName, sep=',')
 
 
-def crwalTimesofindia(keyword, counts):
+
+def crawlTimesofindia(keyword, counts):
     data = [[], [], [], [], [], []]
     keywords = keywords.split(',')
     for key in keywords:
