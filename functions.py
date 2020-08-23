@@ -19,7 +19,7 @@ def save(data, target):
 
     df = pd.DataFrame(data=np.array(data).T, columns=[
                       'title', 'content', 'published', 'keyword', 'url', 'source'])
-    fileName = strftime("%Y-%m-%d", gmtime()) + "_" + target + '.csv'
+    fileName = strftime("%Y-%m-%d", gmtime()) + '.csv'
     df.to_csv(fileName, sep=',')
 
 
@@ -98,7 +98,9 @@ def crawlBangkokpost(keywords, counts):
 
 def crawlThejakartapost(keywords, counts):
     data = [[], [], [], [], [], []]
-    driver = webdriver.Chrome(chrome_options=options)
+    # driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome()
+
     keywords = keywords.split(',')
     for key in keywords:
         driver.get("https://www.thejakartapost.com/news")
@@ -152,8 +154,7 @@ def crawlThejakartapost(keywords, counts):
                     continue
             if(count >= counts):
                 break
-        time.sleep(10)
-
+        time.sleep(3)
     return data
 
 
@@ -200,7 +201,9 @@ def crawlTimesofindia(keywords, counts):
 
 def crawlPsychiatry(keywords, counts):
     data = [[], [], [], [], [], []]
-    driver = webdriver.Chrome(chrome_options=options)
+    # driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome()
+
     keywords = keywords.split(',')
     for key in keywords:
         driver.get(
@@ -264,7 +267,8 @@ def crawlPsychiatry(keywords, counts):
 
 def crawlWhoWesternpacific(keywords, counts):
     data = [[], [], [], [], [], []]
-    driver = webdriver.Chrome(chrome_options=options)
+    # driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome()
     keywords = keywords.split(',')
     for key in keywords:
 
@@ -301,14 +305,15 @@ def crawlWhoWesternpacific(keywords, counts):
             data[4].append(link)
             data[5].append('https://www.who.int/southeastasia')
             count += 1
-        time.sleep(10)
+        time.sleep(3)
 
     return data
 
 
 def crawlWhoSoutheastasia(keywords, counts):
     data = [[], [], [], [], [], []]
-    driver = webdriver.Chrome(chrome_options=options)
+    # driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome()
     keywords = keywords.split(',')
     for key in keywords:
 
@@ -321,7 +326,7 @@ def crawlWhoSoutheastasia(keywords, counts):
 
         for news in all_news:
 
-            if(count > counts):
+            if(count >= counts):
                 break
 
             title = news.find_element_by_class_name('result-title').text
@@ -345,6 +350,6 @@ def crawlWhoSoutheastasia(keywords, counts):
             data[4].append(link)
             data[5].append('https://www.who.int/southeastasia')
             count += 1
-        time.sleep(10)
+        time.sleep(3)
 
     return data
