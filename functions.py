@@ -5,7 +5,8 @@ import numpy as np
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-
+from selenium.common import exceptions
+import re
 
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
@@ -20,7 +21,7 @@ def save(data, target):
     df = pd.DataFrame(data=np.array(data).T, columns=[
                       'title', 'content', 'published', 'keyword', 'url', 'source'])
     fileName = strftime("%Y-%m-%d", gmtime()) + '.csv'
-    df.to_csv(fileName, sep=',')
+    df.to_csv(fileName, sep=',', quotechar='"')
 
 
 def crawlBangkokpost(keywords, counts):
@@ -227,33 +228,36 @@ def crawlPsychiatry(keywords, counts):
             for i in range(len(all_news)):
                 if(count >= counts):
                     break
-                title = all_news[i].find_element_by_tag_name('h2').text
-
-                link = all_news[i].find_element_by_css_selector(
-                    'h2 a').get_attribute('href')
-                if(link.endswith(('.pdf', '.csv', '.xlsx', '.pptx', '.ppt', '.doc'))):
-                    continue
-                driver.get(link)
                 try:
-                    date = driver.find_element_by_tag_name('time').text
-                except:
-                    date = ''
-                try:
-                    contents = driver.find_element_by_tag_name('main').text
-                except:
-                    contents = ''
-                data[0].append(title.encode('ascii', 'ignore'))
-                data[1].append(contents.encode('ascii', 'ignore'))
-                data[2].append(date)
-                data[3].append(key)
-                data[4].append(link)
-                data[5].append('https://www.psychiatry.org')
-                count += 1
+                    title = all_news[i].find_element_by_tag_name('h2').text
 
-                driver.execute_script("window.history.go(-1)")
-                time.sleep(3)
-                all_news = driver.find_elements_by_css_selector(
-                    '.slab.slab--search')
+                    link = all_news[i].find_element_by_css_selector(
+                        'h2 a').get_attribute('href')
+                    if(link.endswith(('.pdf', '.csv', '.xlsx', '.pptx', '.ppt', '.doc'))):
+                        continue
+                    driver.get(link)
+                    try:
+                        date = driver.find_element_by_tag_name('time').text
+                    except:
+                        date = ''
+                    try:
+                        contents = driver.find_element_by_tag_name('main').text
+                    except:
+                        contents = ''
+                    data[0].append(title.encode('unicode_escape'))
+                    data[1].append(contents.encode('unicode_escape'))
+                    data[2].append(date.encode('unicode_escape'))
+                    data[3].append(key.encode('unicode_escape'))
+                    data[4].append(link.encode('unicode_escape'))
+                    data[5].append('https://www.psychiatry.org')
+                    count += 1
+
+                    driver.execute_script("window.history.go(-1)")
+                    time.sleep(3)
+                    all_news = driver.find_elements_by_css_selector(
+                        '.slab.slab--search')
+                except exceptions.StaleElementReferenceException as e:
+                    all_news = driver.find_elements_by_css_selector('.slab.slab--search')
             if(count >= counts):
                 break
             if((current_page + 1) == last_page):
