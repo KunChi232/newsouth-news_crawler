@@ -7,10 +7,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from functions import *
 
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-options.add_argument('window-size=1920x1080')
-options.add_argument("disable-gpu")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--target', type = str, required = True)

@@ -8,10 +8,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common import exceptions
 import re
 
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-options.add_argument('window-size=1920x1080')
-options.add_argument("disable-gpu")
 
 
 def save(data, target):
