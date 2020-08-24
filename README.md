@@ -22,8 +22,13 @@ python crawler.py --target https://timesofindia.indiatimes.com --keywords "menta
 * bs4
 
 # [Google Colab](https://colab.research.google.com/)
-> !git clone https://github.com/KunChi232/newsouth-news_crawler.git ns_crawler  
+`!git clone https://github.com/KunChi232/newsouth-news_crawler.git ns_crawler`
 
-> !pip install selenium  
+`!pip install selenium`
 
-> !python ns_crawler/crawler.py --target https://timesofindia.indiatimes.com --keywords "mental health","suicide" --count 10
+`!python ns_crawler/crawler.py --target https://timesofindia.indiatimes.com --keywords "mental health","suicide" --count 10`
+
+Then, it can get the final csv file with formatted with date.
+
+Screenshot
+![Colab exec result](screenshot/colab_exec_result.png)
