@@ -20,6 +20,7 @@ def _post_data(dataframe):
     post_url = os.getenv('POST_URL')
 
     session = requests.Session()
+    _ = session.get(os.getenv('PREV_URL'))
 
     for index, row in dataframe.iterrows():
         data = {
@@ -32,7 +33,6 @@ def _post_data(dataframe):
             'url': row['source'] + row['url']
         }
 
-        _ = session.get(os.getenv('PREV_URL'))
         r = session.post(post_url, data = data)
 
 
