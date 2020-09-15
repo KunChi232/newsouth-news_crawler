@@ -8,6 +8,30 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common import exceptions
 import re
 
+import os
+import requests
+from dotenv import load_env, find_env
+
+
+def _post_data(dataframe):
+    loginid = os.getenv('LOGINID')
+    password = os.getenv('PASSWORD')
+    post_url = os.getenv('POST_URL')
+
+    for index, row in dataframe.iterrows():
+        data = {
+            'loginid': loginid,
+            'password': password,
+            'title': row['title'],
+            'content': row['content'],
+            'published': row['published'],
+            'keyword': row['keyword'],
+            'url': row['url'] + row['source'],
+        }
+
+        r = requests.post(post_url, data = data)
+
+
 
 
 def save(data, target):
@@ -16,8 +40,13 @@ def save(data, target):
 
     df = pd.DataFrame(data=np.array(data).T, columns=[
                       'title', 'content', 'published', 'keyword', 'url', 'source'])
+
+    # Post data to db
+    _post_data(df)
+
     fileName = strftime("%Y-%m-%d", gmtime()) + '.csv'
     df.to_csv(fileName, sep=',', quotechar='"')
+
 
 
 def crawlBangkokpost(keywords, counts):
