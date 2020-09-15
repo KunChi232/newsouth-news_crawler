@@ -19,6 +19,8 @@ def _post_data(dataframe):
     password = os.getenv('PASSWORD')
     post_url = os.getenv('POST_URL')
 
+    session = requests.Session()
+
     for index, row in dataframe.iterrows():
         data = {
             'loginid': loginid,
@@ -29,9 +31,9 @@ def _post_data(dataframe):
             'keyword': row['keyword'],
             'url': row['source'] + row['url']
         }
-       
-        r = requests.post(post_url, data = data)
- 
+
+        _ = session.get(os.getenv('PREV_URL'))
+        r = session.post(post_url, data = data)
 
 
 
