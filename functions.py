@@ -14,6 +14,7 @@ from dotenv import load_env, find_env
 
 
 def _post_data(dataframe):
+    load_env(find_env())
     loginid = os.getenv('LOGINID')
     password = os.getenv('PASSWORD')
     post_url = os.getenv('POST_URL')
