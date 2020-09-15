@@ -10,11 +10,11 @@ import re
 
 import os
 import requests
-from dotenv import load_env, find_env
+from dotenv import load_dotenv, find_dotenv
 
 
 def _post_data(dataframe):
-    load_env(find_env())
+    load_dotenv(find_dotenv())
     loginid = os.getenv('LOGINID')
     password = os.getenv('PASSWORD')
     post_url = os.getenv('POST_URL')
@@ -27,10 +27,11 @@ def _post_data(dataframe):
             'content': row['content'],
             'published': row['published'],
             'keyword': row['keyword'],
-            'url': row['url'] + row['source'],
+            'url': row['source'] + row['url']
         }
-
+       
         r = requests.post(post_url, data = data)
+ 
 
 
 
