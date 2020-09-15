@@ -1,3 +1,4 @@
 *.csv
 *.exe
+*.env
 __pycache__/
