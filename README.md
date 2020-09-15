@@ -28,6 +28,8 @@ python crawler.py --target https://timesofindia.indiatimes.com --keywords "menta
 
 `!pip install python-dotenv`
 
+`!pip install requests`
+
 `!python ns_crawler/crawler.py --target https://timesofindia.indiatimes.com --keywords "mental health","suicide" --count 10`
 
 Then, it can get the final csv file with formatted with date.
