@@ -56,7 +56,7 @@ def _post_data(dataframe):
             ), ignore_index=True
         )
 
-    contents_db.to_csv('ns_crawler/news.csv', sep=',', quotechar='"')
+    contents_db.to_csv('ns_crawler/news.csv', sep=',', quotechar='"', header=["title", "content", "url"])
 
 
 
