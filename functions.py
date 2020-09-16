@@ -10,8 +10,6 @@ import re
 
 import os
 import requests
-import colab_env
-
 
 def _post_data(dataframe):
 
