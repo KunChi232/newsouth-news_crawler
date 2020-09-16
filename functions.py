@@ -10,11 +10,11 @@ import re
 
 import os
 import requests
-from dotenv import load_dotenv, find_dotenv
+import colab_env
 
 
 def _post_data(dataframe):
-    load_dotenv(find_dotenv())
+
     loginid = os.getenv('LOGINID')
     password = os.getenv('PASSWORD')
     post_url = os.getenv('POST_URL')
