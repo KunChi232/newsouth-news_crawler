@@ -49,7 +49,8 @@ def _post_data(dataframe):
                 'title': title,
                 'content': content,
                 'url': url
-            }
+            },
+            index =[0]
         )
 
         contents_db = contents_db.append(
