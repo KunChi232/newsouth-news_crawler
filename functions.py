@@ -21,7 +21,7 @@ def _post_data(dataframe):
     session = requests.Session()
     _ = session.get(prev_url)
 
-    db = pd.read_csv('/ns_crawler/news.csv')
+    db = pd.read_csv('ns_crawler/news.csv')
     contents_db = db['content']
 
     for index, row in dataframe.iterrows():
@@ -54,7 +54,7 @@ def _post_data(dataframe):
             }, ignore_index=True
         )
 
-    contents_db.to_csv('/nc_crawler/news.csv', sep=',', quotechar='"')
+    contents_db.to_csv('nc_crawler/news.csv', sep=',', quotechar='"')
 
 
 
