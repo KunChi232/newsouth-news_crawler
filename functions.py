@@ -52,14 +52,14 @@ def _post_data(dataframe):
             }
         )
 
-        contents_db = contents_db.append(
+        db = db.append(
             temp_df
         )
 
 
         # r = session.post(post_url, data = data)
 
-    contents_db.to_csv('ns_crawler/news.csv', sep=',', quotechar='"', header=True)
+    db.to_csv('ns_crawler/news.csv', sep=',', quotechar='"', header=True)
 
 
 
