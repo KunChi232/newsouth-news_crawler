@@ -44,17 +44,20 @@ def _post_data(dataframe):
             'url': url
         }
 
-        # r = session.post(post_url, data = data)
+        temp_df = pd.DataFrame(
+            {
+                'title': title,
+                'content': content,
+                'url': url
+            }
+        )
 
         contents_db = contents_db.append(
-            pd.Series(
-                {
-                    'title': title,
-                    'content': content,
-                    'url': url
-                }
-            ), ignore_index=True
+            temp_df
         )
+
+
+        # r = session.post(post_url, data = data)
 
     contents_db.to_csv('ns_crawler/news.csv', sep=',', quotechar='"', header=True)
 
