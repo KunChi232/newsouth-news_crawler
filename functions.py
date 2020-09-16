@@ -21,7 +21,7 @@ def _post_data(dataframe):
     session = requests.Session()
     _ = session.get(prev_url)
 
-    db = pd.read_csv('news.csv')
+    db = pd.read_csv('/ns_crawler/news.csv')
     contents_db = db['content']
 
     for index, row in dataframe.iterrows():
@@ -29,19 +29,32 @@ def _post_data(dataframe):
 
         if (contents_db==content).any():
             dataframe.drop(index, inplace=True)
-            return 
+            continue
+
+        title = row['title']
+        url = row['source'] + row['url']
 
         data = {
             'loginid': loginid,
             'password': password,
-            'title': row['title'],
+            'title': title,
             'content': content,
             'published': row['published'],
             'keyword': row['keyword'],
-            'url': row['source'] + row['url']
+            'url': url
         }
 
         # r = session.post(post_url, data = data)
+
+        contents_db = contents_db.append(
+            {
+                'title': title,
+                'content': content,
+                'url': url
+            }, ignore_index=True
+        )
+
+    contents_db.to_csv('/nc_crawler/news.csv', sep=',', quotechar='"')
 
 
 
