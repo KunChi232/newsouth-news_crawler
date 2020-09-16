@@ -59,7 +59,7 @@ def _post_data(dataframe):
 
         # r = session.post(post_url, data = data)
 
-    db.to_csv('ns_crawler/news.csv', sep=',', index = False, quotechar='"', header=['title', 'content', 'url'])
+    db.to_csv('ns_crawler/news.csv', sep=',', quotechar='"', header=['title', 'content', 'url'], index = False)
 
 
 
@@ -75,7 +75,7 @@ def save(data, target):
     _post_data(df)
 
     fileName = strftime("%Y-%m-%d", gmtime()) + '.csv'
-    df.to_csv(fileName, sep=',', quotechar='"')
+    df.to_csv(fileName, sep=',', quotechar='"', index = False)
 
 
 
