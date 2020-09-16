@@ -15,23 +15,33 @@ def _post_data(dataframe):
 
     loginid = os.getenv('LOGINID')
     password = os.getenv('PASSWORD')
+    prev_url = os.getenv('PREV_URL')
     post_url = os.getenv('POST_URL')
-
+    
     session = requests.Session()
-    _ = session.get(os.getenv('PREV_URL'))
+    _ = session.get(prev_url)
+
+    db = pd.read_csv('news.csv')
+    contents_db = db['content']
 
     for index, row in dataframe.iterrows():
+        content = row['content']
+
+        if (contents_db==content).any():
+            dataframe.drop(index, inplace=True)
+            return 
+
         data = {
             'loginid': loginid,
             'password': password,
             'title': row['title'],
-            'content': row['content'],
+            'content': content,
             'published': row['published'],
             'keyword': row['keyword'],
             'url': row['source'] + row['url']
         }
 
-        r = session.post(post_url, data = data)
+        # r = session.post(post_url, data = data)
 
 
 
