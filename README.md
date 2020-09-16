@@ -39,8 +39,15 @@ colab_env.envvar_handler.add_env('POST_URL', "TEST", overwrite=True)
 
 `!pip install selenium`
 
-`!pip install requests`
-
+### Set environment variables
+`import os`
+```
+os.environ['LOGINID'] = ''
+os.environ['PASSWORD'] = ''
+os.environ['PREV_URL'] = ''
+os.environ['POST_URL'] = ''
+```
+### Excecute
 `!python ns_crawler/crawler.py --target https://timesofindia.indiatimes.com --keywords "mental health","suicide" --count 10`
 
 Then, it can get the final csv file with formatted with date.
