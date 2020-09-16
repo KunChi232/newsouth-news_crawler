@@ -45,12 +45,11 @@ def _post_data(dataframe):
         }
 
         temp_df = pd.DataFrame(
-            {
-                'title': title,
-                'content': content,
-                'url': url
-            },
-            index =[0]
+            data = {
+                'title': [title],
+                'content': [content],
+                'url': [url]
+            }
         )
 
         contents_db = contents_db.append(
