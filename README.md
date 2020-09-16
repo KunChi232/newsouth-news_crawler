@@ -24,9 +24,20 @@ python crawler.py --target https://timesofindia.indiatimes.com --keywords "menta
 # [Google Colab](https://colab.research.google.com/)
 `!git clone https://github.com/KunChi232/newsouth-news_crawler.git ns_crawler`
 
-`!pip install selenium`
+```
+!pip install colab-env -qU
 
-`!pip install python-dotenv`
+!more ns_crawler/vars.env
+```
+
+```
+colab_env.envvar_handler.add_env('LOGINID', "TEST", overwrite=True)
+colab_env.envvar_handler.add_env('PASSWORD', "TEST", overwrite=True)
+colab_env.envvar_handler.add_env('PREV_URL', "TEST", overwrite=True)
+colab_env.envvar_handler.add_env('POST_URL', "TEST", overwrite=True)
+```
+
+`!pip install selenium`
 
 `!pip install requests`
 
