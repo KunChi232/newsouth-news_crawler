@@ -22,17 +22,10 @@ def _post_data(dataframe):
     session = requests.Session()
     _ = session.get(prev_url)
 
-    db = pd.read_csv('ns_crawler/news.csv')
-    contents_db = db['content']
-
     for index, row in dataframe.iterrows():
-        content = row['content']
-
-        if (contents_db==content).any():
-            dataframe.drop(index, inplace=True)
-            continue
-
+        
         title = row['title']
+        content = row['content']
         url = row['source'] + row['url']
 
         data = {
@@ -44,23 +37,8 @@ def _post_data(dataframe):
             'keyword': row['keyword'],
             'url': url
         }
-
-        temp_df = pd.DataFrame(
-            data = {
-                'title': [title],
-                'content': [content],
-                'url': [url]
-            }
-        )
-
-        db = db.append(temp_df)
-
-
+        
         r = session.post(post_url, data = data)
-
-
-    db.to_csv(file_path, sep=',', quotechar='"', header=['title', 'content', 'url'], index = False)
-
 
 
 
