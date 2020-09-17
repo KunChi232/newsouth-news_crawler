@@ -17,6 +17,7 @@ def _post_data(dataframe):
     password = os.getenv('PASSWORD')
     prev_url = os.getenv('PREV_URL')
     post_url = os.getenv('POST_URL')
+    file_path = os.getenv('FILE_PATH')
     
     session = requests.Session()
     _ = session.get(prev_url)
@@ -52,15 +53,13 @@ def _post_data(dataframe):
             }
         )
 
-        db = db.append(
-            temp_df
-        )
+        db = db.append(temp_df)
 
 
         r = session.post(post_url, data = data)
 
 
-    db.to_csv('ns_crawler/news.csv', sep=',', quotechar='"', header=['title', 'content', 'url'], index = False)
+    db.to_csv(file_path, sep=',', quotechar='"', header=['title', 'content', 'url'], index = False)
 
 
 
