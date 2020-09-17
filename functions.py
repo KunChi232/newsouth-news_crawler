@@ -155,7 +155,14 @@ def crawlBangkokpost(keywords, counts):
 def crawlThejakartapost(keywords, counts):
     data = [[], [], [], [], [], []]
     # driver = webdriver.Chrome(chrome_options=options)
-    driver = webdriver.Chrome()
+    
+    # for colab
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+    #driver = webdriver.Chrome()
 
     keywords = keywords.split(',')
     for key in keywords:
@@ -258,7 +265,13 @@ def crawlTimesofindia(keywords, counts):
 def crawlPsychiatry(keywords, counts):
     data = [[], [], [], [], [], []]
     # driver = webdriver.Chrome(chrome_options=options)
-    driver = webdriver.Chrome()
+    # for colab
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+    # driver = webdriver.Chrome()
 
     keywords = keywords.split(',')
     for key in keywords:
@@ -327,7 +340,15 @@ def crawlPsychiatry(keywords, counts):
 def crawlWhoWesternpacific(keywords, counts):
     data = [[], [], [], [], [], []]
     # driver = webdriver.Chrome(chrome_options=options)
-    driver = webdriver.Chrome()
+    
+    # for colab
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+
+    # driver = webdriver.Chrome()
     keywords = keywords.split(',')
     for key in keywords:
 
@@ -372,7 +393,15 @@ def crawlWhoWesternpacific(keywords, counts):
 def crawlWhoSoutheastasia(keywords, counts):
     data = [[], [], [], [], [], []]
     # driver = webdriver.Chrome(chrome_options=options)
-    driver = webdriver.Chrome()
+    
+    # for colab
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+    
+    # driver = webdriver.Chrome()
     keywords = keywords.split(',')
     for key in keywords:
 
