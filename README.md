@@ -30,24 +30,15 @@ python crawler.py --target https://timesofindia.indiatimes.com --keywords "menta
 !git clone -b add_post_func https://github.com/junjun1023/newsouth-news_crawler.git ns_crawler
 ```
 
-2. Mount google drive
-```
-from google.colab import drive
-drive.mount("/content/drive")
-
-!ls
-```
-
-3. Set environment variables
+2. Set environment variables
 ```
 os.environ['LOGINID'] = '' 
 os.environ['PASSWORD'] = ''
 os.environ['PREV_URL'] = ''
 os.environ['POST_URL'] = ''
-os.environ['FILE_PATH'] = '' # file path of news.csv on your own drive
 ```
 
-4. 
+3. 
 ```
 !pip install selenium
 !apt install chromium-chromedriver

@@ -17,7 +17,6 @@ def _post_data(dataframe):
     password = os.getenv('PASSWORD')
     prev_url = os.getenv('PREV_URL')
     post_url = os.getenv('POST_URL')
-    file_path = os.getenv('FILE_PATH')
     
     session = requests.Session()
     _ = session.get(prev_url)
@@ -37,7 +36,7 @@ def _post_data(dataframe):
             'keyword': row['keyword'],
             'url': url
         }
-        
+
         r = session.post(post_url, data = data)
 
 
