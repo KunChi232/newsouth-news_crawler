@@ -22,20 +22,41 @@ python crawler.py --target https://timesofindia.indiatimes.com --keywords "menta
 * bs4
 
 # [Google Colab](https://colab.research.google.com/)
-`!git clone https://github.com/KunChi232/newsouth-news_crawler.git ns_crawler`
 
-`!pip install selenium`
-
-### Set environment variables
-`import os`
+## Setup project
+1. Clone target project
 ```
-os.environ['LOGINID'] = ''
+!git clone -b add_post_func https://github.com/junjun1023/newsouth-news_crawler.git ns_crawler
+```
+
+2. Mount google drive
+```
+from google.colab import drive
+drive.mount("/content/drive")
+
+!ls
+```
+
+3. Set environment variables
+```
+os.environ['LOGINID'] = '' 
 os.environ['PASSWORD'] = ''
 os.environ['PREV_URL'] = ''
 os.environ['POST_URL'] = ''
+os.environ['FILE_PATH'] = '' # file path of news.csv on your own drive
 ```
-### Excecute
-`!python ns_crawler/crawler.py --target https://timesofindia.indiatimes.com --keywords "mental health","suicide" --count 10`
+
+4. 
+```
+!pip install selenium
+!apt install chromium-chromedriver
+
+```
+
+## Excecute
+```
+!python ns_crawler/crawler.py --target https://www.psychiatry.org --keywords "pacific","suicide" --count 10
+```
 
 Then, it can get the final csv file with formatted with date.
 
