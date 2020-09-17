@@ -6,6 +6,7 @@
 5. `https://thejakartapost.com`
 6. `https://www.bangkokpost.com`
 
+
 # Usage
 For two keywords, each keyword with 10 results
 ```python
@@ -50,7 +51,6 @@ os.environ['FILE_PATH'] = '' # file path of news.csv on your own drive
 ```
 !pip install selenium
 !apt install chromium-chromedriver
-
 ```
 
 ## Excecute
