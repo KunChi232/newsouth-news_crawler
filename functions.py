@@ -49,7 +49,7 @@ def save(data, target):
                       'title', 'content', 'published', 'keyword', 'url', 'source'])
 
     # Post data to db
-    _post_data(df)
+    # _post_data(df)
 
     fileName = strftime("%Y-%m-%d", gmtime()) + '.csv'
     df.to_csv(fileName, sep=',', quotechar='"', index = False)
@@ -331,6 +331,10 @@ def crawlWhoWesternpacific(keywords, counts):
 
         driver.get("https://www.who.int/southeastasia/search-results?page=1&pagesize=99999&query={}&sort=relevance&sortdir=desc&cname=highlight-searo&cname=searo&default=AND&f.Countries.size=100&f.Lang.filter=en&f.RegionalSites.filter=South-East%20Asia&f.RegionalSites.size=100&f.Topics.size=100&f.contenttype.filter=html&f.contenttype.size=100&f.doctype.size=101&facet.field=RegionalSites&facet.field=Topics&facet.field=doctype&facet.field=Countries&facet.field=contenttype&facet.field=Lang&tune=true&tune.0=3&tune.1=2&tune.2=2&tune.3=3&tune.4=180&tune.5=75".format(key))
         time.sleep(10)
+
+        if len(driver.find_elements_by_id('results-container')) == 0:
+            return None
+        
         all_news = driver.find_elements_by_id(
             'results-container')[0].find_elements_by_css_selector('.col-sm-12 .single-result-container')
 
@@ -384,6 +388,10 @@ def crawlWhoSoutheastasia(keywords, counts):
 
         driver.get("https://www.who.int/southeastasia/search-results?page=1&pagesize=99999&query={}&sort=relevance&sortdir=desc&cname=highlight-searo&cname=searo&default=AND&f.Countries.size=100&f.Lang.filter=en&f.RegionalSites.filter=South-East%20Asia&f.RegionalSites.size=100&f.Topics.size=100&f.contenttype.filter=html&f.contenttype.size=100&f.doctype.size=101&facet.field=RegionalSites&facet.field=Topics&facet.field=doctype&facet.field=Countries&facet.field=contenttype&facet.field=Lang&tune=true&tune.0=3&tune.1=2&tune.2=2&tune.3=3&tune.4=180&tune.5=75".format(key))
         time.sleep(10)
+
+        if len(driver.find_elements_by_id('results-container')) == 0:
+            return None
+
         all_news = driver.find_elements_by_id(
             'results-container')[0].find_elements_by_css_selector('.col-sm-12 .single-result-container')
 
